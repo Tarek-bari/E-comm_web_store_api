@@ -12,6 +12,7 @@ export const createNewCustomer = async (req: Request, res: Response): Promise<vo
 
     const duplicateUserNameCheck = await User.findOne({ userName: userName })
     const duplicateEmailCheck = await User.findOne({ email: email })
+    const duplicatePhoneCheck = await User.findOne({ phone: phone})
 
     if (duplicateUserNameCheck) {
         res.status(409).json({ 'message': 'userName already exists' })
@@ -20,6 +21,11 @@ export const createNewCustomer = async (req: Request, res: Response): Promise<vo
 
     if (duplicateEmailCheck) {
         res.status(409).json({ 'message': 'email already exists' })
+        return
+    }
+
+    if (duplicatePhoneCheck) {
+        res.status(409).json({ 'message': 'phone number already exists' })
         return
     }
 
@@ -51,6 +57,7 @@ export const createNewAdmin = async (req: Request, res: Response): Promise<void>
 
     const duplicateUserNameCheck = await User.findOne({ userName: userName })
     const duplicateEmailCheck = await User.findOne({ email: email })
+    const duplicatePhoneCheck = await User.findOne({ phone: phone})
 
     if (duplicateUserNameCheck) {
         res.status(409).json({ 'message': 'userName already exists' })
@@ -59,6 +66,11 @@ export const createNewAdmin = async (req: Request, res: Response): Promise<void>
 
     if (duplicateEmailCheck) {
         res.status(409).json({ 'message': 'email already exists' })
+        return
+    }
+
+    if (duplicatePhoneCheck) {
+        res.status(409).json({ 'message': 'phone number already exists' })
         return
     }
 

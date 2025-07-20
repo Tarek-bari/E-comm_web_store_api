@@ -5,7 +5,7 @@ import { validationResult, checkSchema } from 'express-validator'
 
 export const validateOrderSchema: RequestHandler[] = [
 
-    // ...checkSchema(productSchema),
+    // ...checkSchema(order_schema),
     (req: Request, res: Response, next: NextFunction) => checkSchema(order_schema).run(req).then(() => next()).catch((next)),
 
     (req: Request, res: Response, next: NextFunction) => {

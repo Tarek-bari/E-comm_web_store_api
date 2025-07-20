@@ -26,11 +26,24 @@ const userSchema = new Schema({
         required: true
     },
     roles: {
-        Customer: Number,
-        Seller: Number,
-        Admin: Number
+        Customer: {
+            type: Number,
+            default: null
+        },
+        Seller: {
+            type: Number,
+            default: null
+        },
+        Admin: {
+            type: Number,
+            default: null
+        }
     },
     createdAt: {
+        type: Date,
+        default: Date.now
+    },
+    updatedAt: {
         type: Date,
         default: Date.now
     },

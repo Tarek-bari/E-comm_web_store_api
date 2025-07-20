@@ -6,7 +6,9 @@ export const dbConnect = async () => {
         if (!uri) {
             throw new Error('DATABASE_URI is not defined');
         }
-        await connect(uri);
+        await connect(uri, {
+            dbName: process.env.DATABASE_NAME
+        });
     } catch (err) {
         if (err instanceof Error) {
             console.log(err.message);

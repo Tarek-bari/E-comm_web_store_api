@@ -1,5 +1,3 @@
-import { checkSchema } from "express-validator"
-
 interface OrderSchema {
     [key: string]: {}
 }
