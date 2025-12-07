@@ -1,94 +1,97 @@
-import { Request, Response } from 'express'
-import User from '../../models/user'
-import { hash } from 'bcrypt'
+import { Request, Response } from "express";
+import User from "../../models/user";
+import { hash } from "bcrypt";
 
+export const createNewAdmin = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { image, userName, email, phone, password } = req.body;
+  if (!userName || !email || !password) {
+    res.status(400).json({ message: "Please fill in all fields" });
+    return;
+  }
 
-export const createNewCustomer = async (req: Request, res: Response): Promise<void> => {
-    const { image, userName, email, phone, password } = req.body
-    if (!userName || !email || !password) {
-        res.status(400).json({ 'message': 'Please fill in all fields' })
-        return
-    }
+  const duplicateUserNameCheck = await User.findOne({ userName: userName });
+  const duplicateEmailCheck = await User.findOne({ email: email });
+  const duplicatePhoneCheck = await User.findOne({ phone: phone });
 
-    const duplicateUserNameCheck = await User.findOne({ userName: userName })
-    const duplicateEmailCheck = await User.findOne({ email: email })
-    const duplicatePhoneCheck = await User.findOne({ phone: phone})
+  if (duplicateUserNameCheck) {
+    res.status(409).json({ message: "userName already exists" });
+    return;
+  }
 
-    if (duplicateUserNameCheck) {
-        res.status(409).json({ 'message': 'userName already exists' })
-        return
-    }
+  if (duplicateEmailCheck) {
+    res.status(409).json({ message: "email already exists" });
+    return;
+  }
 
-    if (duplicateEmailCheck) {
-        res.status(409).json({ 'message': 'email already exists' })
-        return
-    }
+  if (duplicatePhoneCheck) {
+    res.status(409).json({ message: "phone number already exists" });
+    return;
+  }
 
-    if (duplicatePhoneCheck) {
-        res.status(409).json({ 'message': 'phone number already exists' })
-        return
-    }
+  try {
+    const hashPassword = await hash(password, 10);
 
-    try {
-        const hashPassword = await hash(password, 10)
+    await User.create({
+      image: image ? image : null,
+      userName: userName,
+      email: email,
+      phone: phone ? phone : null,
+      password: hashPassword,
+      roles: { Admin: 2021 },
+    });
 
-        await User.create({
-            image: image ? image : null,
-            userName: userName,
-            email: email,
-            phone: phone ? phone : null,
-            password: hashPassword,
-            roles: { Customer: 5001 }
-        })
+    res.status(201).json({ success: `New admin ${userName} created` });
+  } catch (err) {
+    res.status(500).json({ error: (err as Error).message });
+  }
+};
 
-        res.status(201).json({ 'success': `New user ${userName} created` })
+export const createNewCustomer = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { image, userName, email, phone, password } = req.body;
+  if (!userName || !email || !password) {
+    res.status(400).json({ message: "Please fill in all fields" });
+    return;
+  }
 
-    } catch (err) {
-        res.status(500).json({ 'error': (err as Error).message })
-    }
-}
+  const duplicateUserNameCheck = await User.findOne({ userName: userName });
+  const duplicateEmailCheck = await User.findOne({ email: email });
+  const duplicatePhoneCheck = await User.findOne({ phone: phone });
 
-export const createNewAdmin = async (req: Request, res: Response): Promise<void> => {
-    const { image, userName, email, phone, password } = req.body
-    if (!userName || !email || !password) {
-        res.status(400).json({ 'message': 'Please fill in all fields' })
-        return
-    }
+  if (duplicateUserNameCheck) {
+    res.status(409).json({ message: "userName already exists" });
+    return;
+  }
 
-    const duplicateUserNameCheck = await User.findOne({ userName: userName })
-    const duplicateEmailCheck = await User.findOne({ email: email })
-    const duplicatePhoneCheck = await User.findOne({ phone: phone})
+  if (duplicateEmailCheck) {
+    res.status(409).json({ message: "email already exists" });
+    return;
+  }
 
-    if (duplicateUserNameCheck) {
-        res.status(409).json({ 'message': 'userName already exists' })
-        return
-    }
+  if (duplicatePhoneCheck) {
+    res.status(409).json({ message: "phone number already exists" });
+    return;
+  }
 
-    if (duplicateEmailCheck) {
-        res.status(409).json({ 'message': 'email already exists' })
-        return
-    }
+  try {
+    const hashPassword = await hash(password, 10);
 
-    if (duplicatePhoneCheck) {
-        res.status(409).json({ 'message': 'phone number already exists' })
-        return
-    }
+    await User.create({
+      image: image ? image : null,
+      userName: userName,
+      email: email,
+      phone: phone ? phone : null,
+      password: hashPassword,
+      roles: { Customer: 5001 },
+    });
 
-    try {
-        const hashPassword = await hash(password, 10)
-
-        await User.create({
-            image: image ? image : null,
-            userName: userName,
-            email: email,
-            phone: phone ? phone : null,
-            password: hashPassword,
-            roles: { Admin: 2021 }
-        })
-
-        res.status(201).json({ 'success': `New admin ${userName} created` })
-
-    } catch (err) {
-        res.status(500).json({ 'error': (err as Error).message })
-    }
-}
+    res.status(201).json({ success: `New user ${userName} created` });
+  } catch (err) {
+    res.status(500).json({ error: (err as Error).message });
+  }
+};

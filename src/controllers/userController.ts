@@ -19,7 +19,7 @@ export const getProfile = async (req: Request, res: Response) => {
         //     }
         // }
 
-        let role = userData?.roles ? Object.keys(userData?.roles) : []
+        const role = userData?.roles ? Object.keys(userData?.roles) : []
 
         const profile = {
             picture: userData?.image,

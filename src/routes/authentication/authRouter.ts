@@ -1,8 +1,7 @@
-import { Router } from 'express'
-import { loginHandler } from '../../controllers/authentication/authController'
+import { Router } from "express";
+import { loginHandler } from "../../controllers/authentication/authController";
+import { validateLoginSchema } from "../../middleware/validation/validateLoginSchema";
 
+const router = Router();
 
-const router = Router()
-
-export default router
-    .post('/', loginHandler)
+export default router.post("/", validateLoginSchema, loginHandler);

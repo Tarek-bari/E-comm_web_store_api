@@ -30,10 +30,6 @@ const productSchema = new Schema({
         required: true
     },
     discount: Number,
-    createdAt: {
-        type: Date,
-        default: Date.now
-    },
     updatedAt: {
         type: Date,
         default: Date.now
