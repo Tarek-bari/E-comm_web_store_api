@@ -1,2 +1,15 @@
-node_modules
-.env
+# Ignore all node_modules
+node_modules/
+
+# Ignore environment files
+*.env
+
+# Ignore logs
+*.log
+
+# Ignore build/dist folders
+dist/
+build/
+
+# OS files
+.DS_Store
